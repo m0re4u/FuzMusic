@@ -1,2 +1,5 @@
-Using R!
-(but if we do Python we might want to use this: https://github.com/pylast/pylast)
+## Python! Woo
+
+-----
+Future stuff:
+- Last.fm API in Python: https://github.com/pylast/pylast

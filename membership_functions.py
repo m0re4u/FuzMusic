@@ -8,7 +8,10 @@ class Identity():
 
 
 class Gaussian():
-    """calculates the Gaussian function after setting mu and sigma"""
+    """
+    calculates the Gaussian function after setting mu and sigma
+    TODO Check if this is function shows correct behaviour
+    """
     def __init__(self, mu, sigma):
         self.mu = mu
         self.sigma = sigma
