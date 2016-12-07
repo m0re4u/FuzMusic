@@ -17,16 +17,18 @@ def main(api_data, artist_file):
     with open(artist_file, 'r') as datafile:
         tsvin = csv.reader(datafile, delimiter='\t')
         already_done = []
+        writeback_dict = {}
         for dataline in tsvin:
+            # dataline = [userid, artistid, artistname, trackid, trackname]
             try:
                 # Find track -> album -> top tags
                 nr = pylast.Track(dataline[3], dataline[5], network)
                 album = nr.get_album()
-                if album not in already_done:
+                if album not in writeback_dict.keys():
                     ts = album.get_top_tags()
                     # writeback should be here
-                    print([tag[0].name for tag in ts])
-                    already_done.append(album)
+                    writeback_dict[album] = [tag[0].name for tag in ts]
+                print('Processed.')
             except Exception as e:
                 print("Did not find: {} - {}".format(dataline[3], dataline[5]))
                 continue
