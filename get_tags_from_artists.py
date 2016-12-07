@@ -1,13 +1,14 @@
 import pylast
 import json
+import argparse
 
 
 def main(api_data, artist_file):
-    password_hash = pylast.md5(userdata['password'])
+    password_hash = pylast.md5(api_data['password'])
     network = pylast.LastFMNetwork(
-        api_key=userdata['key'],
-        api_secret=userdata['shared_secret'],
-        username=userdata['username'],
+        api_key=api_data['key'],
+        api_secret=api_data['shared_secret'],
+        username=api_data['username'],
         password_hash=password_hash)
     # For usage of the pylast package, type help(pylast) after importing
 
