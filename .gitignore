@@ -91,3 +91,6 @@ ENV/
 
 # LastFM API key
 .api_key
+
+# data folder
+data/
