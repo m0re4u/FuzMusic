@@ -1,6 +1,8 @@
 # A music recommendation system using fuzzy logic and Last.fm tags
 
 -----
+Dataset:
+- http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm-1K.html
 Future stuff:
 - Last.fm API in Python: [pylast](https://github.com/pylast/pylast)
 - cmeans clustering(from [scikit-fuzzy](https://github.com/scikit-fuzzy/scikit-fuzzy))
