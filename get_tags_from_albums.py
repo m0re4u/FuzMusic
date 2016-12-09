@@ -26,9 +26,9 @@ def main(api_data, artist_file):
                 album = nr.get_album()
                 if album not in writeback_dict.keys():
                     ts = album.get_top_tags()
-                    # writeback should be here - right now the dict has albums 
-					# as key and taglist as value. In the future it will be 
-					# tag: count pairs. 
+                    # writeback should be here - right now the dict has albums
+                    # as key and taglist as value. In the future it will be
+                    # tag: count pairs.
                     writeback_dict[album] = [tag[0].name for tag in ts]
                 print('Processed.')
             except Exception as e:
