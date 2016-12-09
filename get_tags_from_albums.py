@@ -26,7 +26,9 @@ def main(api_data, artist_file):
                 album = nr.get_album()
                 if album not in writeback_dict.keys():
                     ts = album.get_top_tags()
-                    # writeback should be here
+                    # writeback should be here - right now the dict has albums 
+					# as key and taglist as value. In the future it will be 
+					# tag: count pairs. 
                     writeback_dict[album] = [tag[0].name for tag in ts]
                 print('Processed.')
             except Exception as e:
@@ -35,7 +37,7 @@ def main(api_data, artist_file):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='A data preprocessor for\
-    the last-fm 1K dataset. Outputs the tags of albums that tracks belong tos')
+    the last-fm 1K dataset. Outputs the tags of albums that tracks belong to')
     parser.add_argument('data', help='data folder with songs titles (.tsv)')
     args = parser.parse_args()
     # Path to the data for your API key. Since it requires your password we
