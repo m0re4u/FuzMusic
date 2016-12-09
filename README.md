@@ -6,7 +6,7 @@ Dataset:
 Future stuff:
 - Last.fm API in Python: [pylast](https://github.com/pylast/pylast)
 - cmeans clustering(from [scikit-fuzzy](https://github.com/scikit-fuzzy/scikit-fuzzy))
-- [ichibuchi classification](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.294.6338&rep=rep1&type=pdf)
+- [ishibuchi classification](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.294.6338&rep=rep1&type=pdf)
 - word2vec for tags
 
 
