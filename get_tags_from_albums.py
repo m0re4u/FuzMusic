@@ -2,6 +2,14 @@ import pylast
 import json
 import argparse
 import csv
+import os
+
+
+def write_to_file(fdict, filename):
+    # filename is still with .txt extension
+    filename, ext = os.path.splittext(filename)
+    with open(filename + ".json", "w") as outfile:
+        json.dump(fdict, outfile, indent=2)
 
 
 def main(api_data, artist_file):
@@ -21,19 +29,28 @@ def main(api_data, artist_file):
         for dataline in tsvin:
             # dataline = [userid, artistid, artistname, trackid, trackname]
             try:
-                # Find track -> album -> top tags
+                # Find album of track -> top tags of album
                 nr = pylast.Track(dataline[3], dataline[5], network)
                 album = nr.get_album()
-                if album not in writeback_dict.keys():
+                # Skip albums we've already gotten the tags from
+                if album not in already_done:
+                    already_done.append(album)
+                    # Get top tags
                     ts = album.get_top_tags()
-                    # writeback should be here - right now the dict has albums
-                    # as key and taglist as value. In the future it will be
-                    # tag: count pairs.
-                    writeback_dict[album] = [tag[0].name for tag in ts]
-                print('Processed.')
+                    # Store and count tags
+                    for tag in ts:
+                        t = tag[0].name
+                        if t in writeback_dict:
+                            writeback_dict[t] += 1
+                        else:
+                            writeback_dict[t] = 1
+                    print("Processed: {}".format(album))
             except Exception as e:
                 print("Did not find: {} - {}".format(dataline[3], dataline[5]))
                 continue
+
+        write_to_file(writeback_dict, artist_file)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='A data preprocessor for\
