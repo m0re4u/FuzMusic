@@ -7,7 +7,7 @@ import os
 
 def write_to_file(fdict, filename):
     # filename is still with .txt extension
-    filename, ext = os.path.splittext(filename)
+    filename, ext = os.path.splitext(filename)
     with open(filename + ".json", "w") as outfile:
         json.dump(fdict, outfile, indent=2)
 
@@ -30,13 +30,13 @@ def main(api_data, artist_file):
             # dataline = [userid, artistid, artistname, trackid, trackname]
             try:
                 # Find album of track -> top tags of album
-                nr = pylast.Track(dataline[3], dataline[5], network)
-                album = nr.get_album()
+                artist = pylast.Artist(dataline[3], network)
+                # album = nr.get_album()
                 # Skip albums we've already gotten the tags from
-                if album not in already_done:
-                    already_done.append(album)
+                if artist not in already_done:
+                    already_done.append(artist)
                     # Get top tags
-                    ts = album.get_top_tags()
+                    ts = artist.get_top_tags()
                     # Store and count tags
                     for tag in ts:
                         t = tag[0].name
@@ -44,12 +44,13 @@ def main(api_data, artist_file):
                             writeback_dict[t] += 1
                         else:
                             writeback_dict[t] = 1
-                    print("Processed: {}".format(album))
+                    # print("Processed: {}".format(artist))
             except Exception as e:
-                print("Did not find: {} - {}".format(dataline[3], dataline[5]))
+                # print("Did not find: {}".format(dataline[3]))
                 continue
 
         write_to_file(writeback_dict, artist_file)
+        print("Done!")
 
 
 if __name__ == '__main__':
