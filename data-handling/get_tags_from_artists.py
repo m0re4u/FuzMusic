@@ -44,12 +44,13 @@ def main(api_data, artist_file):
                             writeback_dict[t] += 1
                         else:
                             writeback_dict[t] = 1
-                    print("Processed: {}".format(artist))
+                    # print("Processed: {}".format(artist))
             except Exception as e:
-                print("Did not find: {}".format(dataline[3]))
+                # print("Did not find: {}".format(dataline[3]))
                 continue
 
         write_to_file(writeback_dict, artist_file)
+        print("Done!")
 
 
 if __name__ == '__main__':
