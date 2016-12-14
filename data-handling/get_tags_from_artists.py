@@ -12,7 +12,15 @@ def write_to_file(fdict, filename):
         json.dump(fdict, outfile, indent=2)
 
 
-def main(api_data, artist_file):
+def remove_ones(tag_dict):
+    newdict = {}
+    for key, value in tag_dict:
+        if value > 1:
+            newdict[key] = value
+    return newdict
+
+
+def main(api_data, artist_file, ones=True):
     password_hash = pylast.md5(api_data['password'])
     network = pylast.LastFMNetwork(
         api_key=api_data['key'],
@@ -49,6 +57,8 @@ def main(api_data, artist_file):
                 # print("Did not find: {}".format(dataline[3]))
                 continue
 
+        if not ones:
+            newdict = remove_ones(writeback_dict)
         write_to_file(writeback_dict, artist_file)
         print("Done!")
 
@@ -57,6 +67,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='A data preprocessor for\
     the last-fm 1K dataset. Outputs the tags of albums that tracks belong to')
     parser.add_argument('data', help='data folder with songs titles (.tsv)')
+    parser.add_argument('--no-ones', dest='ones', action='store_false',
+                        help='Dont store tags with only one occurrence')
     args = parser.parse_args()
     # Path to the data for your API key. Since it requires your password we
     # should all have our own. The path shown here ('.api_key') is also in the
@@ -65,4 +77,4 @@ if __name__ == '__main__':
     secretfile = '.api_key'
     with open(secretfile) as f:
         userdata = json.load(f)
-        main(userdata, args.data)
+        main(userdata, args.data, args.ones)
