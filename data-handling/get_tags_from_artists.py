@@ -14,7 +14,7 @@ def write_to_file(fdict, filename):
 
 def remove_ones(tag_dict):
     newdict = {}
-    for key, value in tag_dict:
+    for key, value in tag_dict.items():
         if value > 1:
             newdict[key] = value
     return newdict
