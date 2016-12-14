@@ -6,41 +6,33 @@ import os
 
 
 def write_to_file(fdict, filename):
-    # filename is still with .txt extension
+    # filename is still with extension, change it to .json
     filename, ext = os.path.splitext(filename)
     with open(filename + ".json", "w") as outfile:
         json.dump(fdict, outfile, indent=2)
 
 
-def remove_ones(tag_dict):
-    newdict = {}
-    for key, value in tag_dict.items():
-        if value > 1:
-            newdict[key] = value
-    return newdict
-
-
-def main(api_data, artist_file, ones=True):
+def main(api_data, user_file, ones=True):
+    # Connect to Last.fm API
+    # For usage of the pylast package, type help(pylast) after importing
     password_hash = pylast.md5(api_data['password'])
     network = pylast.LastFMNetwork(
         api_key=api_data['key'],
         api_secret=api_data['shared_secret'],
         username=api_data['username'],
         password_hash=password_hash)
-    # For usage of the pylast package, type help(pylast) after importing
 
-    # Open up a txt file of artists to see how tag extraction works
-    with open(artist_file, 'r') as datafile:
+    # Open up a tab separated user file to process
+    with open(user_file, 'r') as datafile:
         tsvin = csv.reader(datafile, delimiter='\t')
         already_done = []
         writeback_dict = {}
         for dataline in tsvin:
             # dataline = [userid, artistid, artistname, trackid, trackname]
             try:
-                # Find album of track -> top tags of album
+                # Find artist of track -> top tags of artist
                 artist = pylast.Artist(dataline[3], network)
-                # album = nr.get_album()
-                # Skip albums we've already gotten the tags from
+                # Skip artists we've already gotten the tags from
                 if artist not in already_done:
                     already_done.append(artist)
                     # Get top tags
@@ -52,14 +44,13 @@ def main(api_data, artist_file, ones=True):
                             writeback_dict[t] += 1
                         else:
                             writeback_dict[t] = 1
-                    # print("Processed: {}".format(artist))
             except Exception as e:
-                # print("Did not find: {}".format(dataline[3]))
                 continue
 
+        # If specified, only keep values larger than 1
         if not ones:
-            newdict = remove_ones(writeback_dict)
-        write_to_file(writeback_dict, artist_file)
+            writeback_dict = {k: v for k, v in writeback_dict.items() if v > 1}
+        write_to_file(writeback_dict, user_file)
         print("Done!")
 
 
@@ -68,7 +59,8 @@ if __name__ == '__main__':
     the last-fm 1K dataset. Outputs the tags of albums that tracks belong to')
     parser.add_argument('data', help='data folder with songs titles (.tsv)')
     parser.add_argument('--no-ones', dest='ones', action='store_false',
-                        help='Dont store tags with only one occurrence')
+                        help='Dont store tags with only one occurrence',
+                        default=True)
     args = parser.parse_args()
     # Path to the data for your API key. Since it requires your password we
     # should all have our own. The path shown here ('.api_key') is also in the
