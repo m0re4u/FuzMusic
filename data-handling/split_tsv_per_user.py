@@ -20,7 +20,7 @@ def main(filename):
             if lastuser != row[0]:
                 print(row[0])
                 lastuser = row[0]
-            with open(os.path.join(dir, "split", lastuser + ".txt"), "a") as f:
+            with open(os.path.join(dir, "split", lastuser + ".tsv"), "a") as f:
                 f.write("{}\n".format("\t".join(row)))
 
 if __name__ == '__main__':
