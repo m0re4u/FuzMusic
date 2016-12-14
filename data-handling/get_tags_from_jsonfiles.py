@@ -3,19 +3,21 @@ import json
 import argparse
 import glob
 
-def main(folder):
-    jsonfilespath = folder + '\*.json'
-    files = glob.glob(jsonfilespath)
 
-    global allTags #Used to save all unique tags that were found
+def main(folder):
+    files = glob.glob(os.path.join(folder, "*.json"))
+
+    global allTags  # Used to save all unique tags that were found
     allTags = []
 
     for jsonfile in files:
+        print("Extracting {}".format(jsonfile))
         append_tags(jsonfile)
 
     newFileName = 'all_tags.json'
-    with open(newFileName,'w') as newFile :
-        json.dump({'tag_list':allTags},newFile)
+    with open(newFileName, 'w') as newFile:
+        json.dump({'tag_list': allTags}, newFile)
+
 
 def append_tags(jsonfile):
     global allTags
