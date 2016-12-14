@@ -21,6 +21,13 @@ Useful links:
 - [ishibuchi classification maybe?](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.294.6338&rep=rep1&type=pdf)
 
 -----
+### Defuzzification (and returning albums based on clusters of tags)
+- Get an album from other user in the same cluster(collaborative) - but then why cluster and not just lookup the closest user?
+- Use the most frequent tag(s) with [tag.getTopAlbums](http://www.last.fm/api/show/tag.getTopAlbums). Will be very prone to music coming from the head of popularity
+- WORK ON THIS!
+
+
+-----
 ### The .api_key file should look like a json file:
 ```
 {
