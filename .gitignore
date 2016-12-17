@@ -94,4 +94,5 @@ ENV/
 
 # data folder
 data/
-.json
+*.json
+*.pik

@@ -1,49 +1,32 @@
+import argparse
 import skfuzzy as fuzz
 import numpy as np
+import preprocess.make_user_vectors as muv
 
 
-def main(bigdatafile):
-    with open(bigdatafile, 'rb') as f:
-        # Just to show the data was loaded in. Put a for loop here iterating
-        # over the lines in the bigdatafile if you want to see what it look
-        # like
-        print("Loaded {}".format(bigdatafile))
+def main(train_data, all_tags):
+    # Create vectors for all users and put them in a big matrix of shape
+    # S x N, where S is the number of features in a vector, and there are N
+    # data points in S-dimensional space.
+    print("Creating user vectors")
+    train = muv.make_vectors(train_data, all_tags)
+    print(train.shape)
 
-        # Contains an example for cmeans for now, not sure how we model the
-        # input vectors yet. This could be in the form of a vector with a '1'
-        # for each tag(would create very large vectors but also prunable), or
-        # we an use word2vec
+    # Run cmeans, usage:
+    # https://github.com/scikit-fuzzy/scikit-fuzzy/blob/master/skfuzzy/cluster/_cmeans.py
+    # cntr, U, U0, d, Jm, p, fpc = fuzz.cluster.cmeans(
+    print("Running cmeans clustering.")
+    results = fuzz.cluster.cmeans(
+        train, 6, 2., error=0.005, maxiter=1000, init=None)
 
-        # https://github.com/scikit-fuzzy/scikit-fuzzy/blob/master/skfuzzy/cluster/_cmeans.py
-        # Set random seed
-        np.random.seed(42)
-
-        # Generate pseudo-random reasonably well distinguished clusters
-        xpts = np.zeros(0)
-        ypts = np.zeros(0)
-
-        x_corr = [7, 1, 4]
-        y_corr = [3, 2, 1]
-
-        for x, y, in zip(x_corr, y_corr):
-            xpts = np.concatenate((xpts, np.r_[np.random.normal(x, 0.5, 200)]))
-            ypts = np.concatenate((ypts, np.r_[np.random.normal(y, 0.5, 200)]))
-
-        # Combine into a feature array
-        features = np.c_[xpts, ypts].T
-        print(np.size(features))
-        print(features)
-
-        # Usage:
-        cntr, U, U0, d, Jm, p, fpc = fuzz.cluster.cmeans(
-            features, 3, 2., error=0.005, maxiter=1000, init=None)
-
-        print(cntr)
+    print("=== Done! ===")
+    print("fpc: {}".format(results[6]))
 
 
 if __name__ == '__main__':
-    # Path to the dataset, see:
-    # http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm-1K.html
-    # The file inserted here is an already extracted file, change it to your
-    # own
-    main("/home/m0re/data/lastfm-dataset-1K/userid-timestamp-artid-artname-traid-traname.tsv")
+    parser = argparse.ArgumentParser(description='Create clusters of users\
+    based on the tags they listen to.')
+    parser.add_argument('folder', help='Folder with user tag data(jsons)')
+    parser.add_argument('all_tags', help='Pickle file containing the tag list')
+    args = parser.parse_args()
+    main(args.folder, args.all_tags)

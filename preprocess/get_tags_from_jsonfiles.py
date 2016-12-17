@@ -1,10 +1,11 @@
 import os
 import json
-import argparse
 import glob
+import argparse
+import pickle
 
 
-def main(folder):
+def main(folder, pikfile):
     files = glob.glob(os.path.join(folder, "*.json"))
 
     global allTags  # Used to save all unique tags that were found
@@ -14,9 +15,9 @@ def main(folder):
         print("Extracting {}".format(jsonfile))
         append_tags(jsonfile)
 
-    newFileName = 'all_tags.json'
-    with open(newFileName, 'w') as newFile:
-        json.dump({'tag_list': allTags}, newFile)
+    with open(pikfile, 'wb') as newFile:
+        print("Storing tags in: {}".format(pikfile))
+        pickle.dump(allTags, newFile)
 
 
 def append_tags(jsonfile):
@@ -31,5 +32,7 @@ def append_tags(jsonfile):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Make list of tags')
     parser.add_argument('folder', help='folder with json files')
+    parser.add_argument('pikfile', help='Pickle file that will contain the tag\
+    list')
     args = parser.parse_args()
-    main(args.folder)
+    main(args.folder, args.pikfile)

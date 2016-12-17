@@ -6,13 +6,14 @@ import os
 
 
 def write_to_file(fdict, filename):
+    # Save the give dict to a json file with a similar filename
     # filename is still with extension, change it to .json
     filename, ext = os.path.splitext(filename)
     with open(filename + ".json", "w") as outfile:
         json.dump(fdict, outfile, indent=2)
 
 
-def main(api_data, user_file, ones=True):
+def main(api_data, user_file, ones=10):
     # Connect to Last.fm API
     # For usage of the pylast package, type help(pylast) after importing
     password_hash = pylast.md5(api_data['password'])
@@ -22,7 +23,7 @@ def main(api_data, user_file, ones=True):
         username=api_data['username'],
         password_hash=password_hash)
 
-    # Open up a tab separated user file to process
+    # Open up a tab separated file representing a user
     with open(user_file, 'r') as datafile:
         tsvin = csv.reader(datafile, delimiter='\t')
         already_done = []
@@ -45,22 +46,24 @@ def main(api_data, user_file, ones=True):
                         else:
                             writeback_dict[t] = 1
             except Exception as e:
+                # Skip if we encouter an error
                 continue
 
-        # If specified, only keep values larger than 1
-        if not ones:
-            writeback_dict = {k: v for k, v in writeback_dict.items() if v > 1}
+        # Only keep values larger than the specified number of occurrences
+        writeback_dict = {k: v for k, v in writeback_dict.items() if v > ones}
+        # Save the final dict
         write_to_file(writeback_dict, user_file)
         print("Done!")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='A data preprocessor for\
-    the last-fm 1K dataset. Outputs the tags of albums that tracks belong to')
-    parser.add_argument('data', help='data folder with songs titles (.tsv)')
-    parser.add_argument('--no-ones', dest='ones', action='store_false',
-                        help='Dont store tags with only one occurrence',
-                        default=True)
+    the last-fm 1K dataset. For a tab separated file, looks up the tags for\
+    each artist and puts it in a json file together with its count')
+    parser.add_argument('data', help='data file with song titles (.tsv)')
+    parser.add_argument('--limit', dest='ones', type=int, metavar='N',
+                        help='Only store tags with more than N occurrences',
+                        default=10)
     args = parser.parse_args()
     # Path to the data for your API key. Since it requires your password we
     # should all have our own. The path shown here ('.api_key') is also in the
