@@ -2,6 +2,7 @@ import argparse
 import skfuzzy as fuzz
 import preprocess.make_user_vectors as muv
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def main(train_data, all_tags):
@@ -15,8 +16,7 @@ def main(train_data, all_tags):
         fpcs.append(results[6])
 
     plt.plot(np.r_[0:15], fpcs)
-    plt.set_xlabel("Number of centers")
-    plt.set_ylabel("Fuzzy partition coefficient")
+    plt.show()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create clusters of users\
