@@ -13,10 +13,4 @@ elif [[ -z $2 ]] && [[ -n $1 ]]; then
     python preprocess/get_tags_from_artists.py --limit 10 $f
   done
   echo "[!] Done preprocessing user data"
-  echo "[!] Please input pickle filename(.pik): "
-  read PICKLEFILE
-  python preprocess/get_tags_from_jsonfiles.py $1 $PICKLEFILE
-  echo "[!] Extracted all tags"
-  echo "[!] Running clustering algorithm"
-  python example_clustering.py "$1" "$PICKLEFILE"
 fi
