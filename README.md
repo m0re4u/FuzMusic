@@ -2,11 +2,9 @@
 
 ## Running the programs
 1. Download & extract the dataset
-2. run `python get_tags_from_albums.py <path-to-data>`
-TODO:
-3. Cluster data using the example in `example_clustering.py`
-4. Make a script for processing a new user and returning a new album
-5. Calculate the performance of recommendation(evaluation)
+2. run `python split_tsv_per_user.py <path-to-tsv-file>`
+3. run `run_all.sh <path-to-split/-directory>` and follow the instructions
+4. Evaluation scripts are in `eval/`
 
 `FLS/` contains a basic implemenation of fuzzification, which we're not using. It's just a try-out, and can be disregarded
 
@@ -18,7 +16,7 @@ Useful links:
 - Last.fm API in Python: [pylast](https://github.com/pylast/pylast)
 - Last.fm API documentation: [last.fm/api](http://www.last.fm/api)
 - cmeans clustering(from [scikit-fuzzy](https://github.com/scikit-fuzzy/scikit-fuzzy))
-- [ishibuchi classification maybe?](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.294.6338&rep=rep1&type=pdf)
+- [~~ishibuchi classification maybe?~~](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.294.6338&rep=rep1&type=pdf)
 
 -----
 ### Defuzzification (and returning albums based on clusters of tags)
