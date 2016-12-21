@@ -3,6 +3,7 @@ import skfuzzy as fuzz
 import numpy as np
 import preprocess.make_user_vectors as muv
 import defuzz.defuzz_fclusters as defuzz
+import defuzz.get_highest_tag as gh
 
 
 def predict_user(clusters, uservec):
@@ -35,8 +36,11 @@ def main(train_data, all_tags, userfile):
     ures = fuzz.cluster.cmeans_predict(udata, results[0], 2., 0.005, 1000)
     # Defuzzify the clusters and their memberships into one single vector
     newvec = defuzz.combine_fclusters(results[0], ures[0])
-    print(newvec)
-    print(newvec.shape)
+    # user data as an np array, not a matrix:
+    uvec = np.squeeze(np.asarray(udata))
+    # Highest scoring tag in difference
+    best_tag = gh.highest_tag(newvec, uvec, all_tags)
+    print(best_tag)
 
 
 if __name__ == '__main__':
