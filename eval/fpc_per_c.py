@@ -7,16 +7,16 @@ import preprocess.make_user_vectors as muv
 
 def main(train_data, all_tags):
     fpcs = []
-    for i in range(2, 30):
-        print("Training {}".format(i))
+    for i in range(2, 500, 10):
         train = muv.make_vectors(train_data, all_tags)
 
         results = fuzz.cluster.cmeans(
-            train, i, 2., error=0.005, maxiter=10000, init=None)
+            train, i, 2., error=0.010, maxiter=300, init=None)
 
         fpcs.append(results[6])
+        print("Trained {}, {}".format(i, results[6]))
 
-    plt.plot(np.r_[0:30], fpcs)
+    plt.plot(np.r_[2:30], fpcs)
     plt.show()
 
 if __name__ == '__main__':

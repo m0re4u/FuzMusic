@@ -9,7 +9,7 @@ elif [[ -z $2 ]] && [[ -n $1 ]]; then
   echo "[!] Preprocessing user data "
   FILES="$1*.tsv"
   for f in $FILES; do
-    echo "Processing $f"
+    echo "[!] Processing $f"
     python preprocess/get_tags_from_artists.py --limit 10 $f
   done
   echo "[!] Done preprocessing user data"

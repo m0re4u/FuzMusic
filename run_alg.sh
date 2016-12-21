@@ -4,7 +4,7 @@
 
 # Get tags from all files in a directory with some default settings
 if [[ -z $1 ]]; then
-  echo "Please specify a directory"
+  echo "[!] Please specify a directory"
 elif [[ -z $2 ]] && [[ -n $1 ]]; then
   echo "[!] Reading in jsons from $1"
   echo "[!] Please input new pickle filename(.pik): "
@@ -12,5 +12,5 @@ elif [[ -z $2 ]] && [[ -n $1 ]]; then
   python preprocess/get_tags_from_jsonfiles.py $1 $PICKLEFILE
   echo "[!] Extracted all tags"
   echo "[!] Running clustering algorithm"
-  python example_clustering.py "$1" "$PICKLEFILE"
+  python eval/predict_user.py "$1" "$PICKLEFILE"
 fi

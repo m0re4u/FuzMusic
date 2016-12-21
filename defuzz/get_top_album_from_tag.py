@@ -1,9 +1,9 @@
 import pylast
 import json
 import argparse
-import os
 import numpy as np
 import pickle
+
 
 def open_all_tags(filename):
     """Open a pickle file to read in a list of all tags"""
@@ -13,7 +13,7 @@ def open_all_tags(filename):
     return tag_list
 
 
-def main(api_data, lfmTag, pikfile):
+def get_top_album(api_data, lfmTag, pikfile):
     # Connect to Last.fm API
     # For usage of the pylast package, type help(pylast) after importing
     password_hash = pylast.md5(api_data['password'])
@@ -27,12 +27,11 @@ def main(api_data, lfmTag, pikfile):
     try:
         tagObj = network.get_tag(lfmTag)
         recommendedAlbum = tagObj.get_top_albums()[0].item
-        albumTTags = recommendedAlbum.get_top_tags()
+        albumTTags = recommendedAlbum.get_top_tags(limit=250)
 
         # Make a vector from the album
         albumVec = get_album_vector(albumTTags, pikfile)
-        return str(recommendedAlbum), albumVec
-
+        return (str(recommendedAlbum), albumVec)
 
     except Exception as e:
         print("Something went wrong. Maybe the input arguments are incompatible. The error message is:")
@@ -44,12 +43,14 @@ def get_album_vector(albumTTags, pikfile):
 
     albumList = []
     for tag in tag_list:
+        done = False
         for topTag in albumTTags:
             tTagStr = str(topTag.item)
             if tTagStr == tag:
-                albumList.append(topTag.weight)
-            else:
-                albumList.append(0)
+                albumList.append(int(topTag.weight))
+                done = True
+        if done is False:
+            albumList.append(0)
 
     return np.array(albumList)
 
@@ -67,4 +68,4 @@ if __name__ == '__main__':
     secretfile = '.api_key'
     with open(secretfile) as f:
         userdata = json.load(f)
-        main(userdata, args.lfmtag, args.pikfile)
+        get_top_album(userdata, args.lfmtag, args.pikfile)
