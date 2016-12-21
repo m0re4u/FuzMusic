@@ -1,8 +1,6 @@
 import argparse
-import numpy as np
-import skfuzzy as fuzz
-import matplotlib.pyplot as plt
 import preprocess.make_user_vectors as muv
+from sklearn.cluster import KMeans
 
 
 def main(train_data, all_tags):
@@ -11,13 +9,11 @@ def main(train_data, all_tags):
         print("Training {}".format(i))
         train = muv.make_vectors(train_data, all_tags)
 
-        results = fuzz.cluster.cmeans(
-            train, i, 2., error=0.005, maxiter=10000, init=None)
+        c = KMeans(i, max_iter=300)
+        c.fit(train)
 
-        fpcs.append(results[6])
-
-    plt.plot(np.r_[0:30], fpcs)
-    plt.show()
+    print("Done!")
+    print(c.cluster_centers_)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create clusters of users\
