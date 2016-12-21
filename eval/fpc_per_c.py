@@ -7,7 +7,7 @@ import preprocess.make_user_vectors as muv
 
 def main(train_data, all_tags):
     fpcs = []
-    for i in range(2, 500, 10):
+    for i in range(2, 30):
         train = muv.make_vectors(train_data, all_tags)
 
         results = fuzz.cluster.cmeans(

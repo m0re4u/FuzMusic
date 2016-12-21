@@ -33,7 +33,6 @@ def main(train_data, all_tags, userfile, limit):
     print("Creating new user vector")
     udata = muv.make_vector(userfile, all_tags, limit)
     print(udata.shape)
-    print(udata)
     print("Predicting user cluster memberships")
 
     ures = fuzz.cluster.cmeans_predict(udata, results[0], 2., 0.005, 1000)
@@ -64,7 +63,7 @@ if __name__ == '__main__':
     parser.add_argument('all_tags', help='Pickle file containing the tag list')
     parser.add_argument('user', help='new user to predict')
     parser.add_argument('--limit', dest='limit', type=int, metavar='N',
-                        help='Only store tags with more than N occurrences',
+                        help='Only use tags with more than N occurrences',
                         default=100)
     args = parser.parse_args()
     main(args.folder, args.all_tags, args.user, args.limit)

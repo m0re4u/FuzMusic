@@ -1,6 +1,5 @@
 import argparse
 import preprocess.make_user_vectors as muv
-from sklearn.cluster import KMeans
 
 
 def main(train_data, all_tags):
