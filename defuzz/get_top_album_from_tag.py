@@ -58,7 +58,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Gets the topalbums from\
         a lastfm tag given in the input')
     parser.add_argument('lfmtag', help='tag to get the topalbums from')
-    parser.add_argument('pikfile', help='sorted list of tags')
+    parser.add_argument('pikfile', help='path to sorted list of tags')
     args = parser.parse_args()
     # Path to the data for your API key. Since it requires your password we
     # should all have our own. The path shown here ('.api_key') is also in the
