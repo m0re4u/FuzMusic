@@ -4,8 +4,7 @@
 1. Download & extract the dataset
 2. run `python split_tsv_per_user.py <path-to-tsv-file>`
 3. run `run_all.sh <path-to-split/-directory>` and follow the instructions
-4. Evaluation scripts are in `eval/`
-
+4. Evaluation scripts are in `eval/`, data used in the report can be found in `paper_data`
 `FLS/` contains a basic implemenation of fuzzification, which we're not using. It's just a try-out, and can be disregarded
 
 -----

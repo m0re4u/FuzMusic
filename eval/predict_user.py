@@ -20,7 +20,6 @@ def main(train_data, all_tags, userfile, limit):
     # data points in S-dimensional space.
     print("Creating user vectors")
     train = muv.make_vectors(train_data, all_tags, limit)
-    print(train.shape)
 
     # Run cmeans, usage:
     # https://github.com/scikit-fuzzy/scikit-fuzzy/blob/master/skfuzzy/cluster/_cmeans.py
@@ -32,7 +31,6 @@ def main(train_data, all_tags, userfile, limit):
     # Predict the memberships to the different clusters for a new user
     print("Creating new user vector")
     udata = muv.make_vector(userfile, all_tags, limit)
-    print(udata.shape)
     print("Predicting user cluster memberships")
 
     ures = fuzz.cluster.cmeans_predict(udata, results[0], 2., 0.005, 1000)
