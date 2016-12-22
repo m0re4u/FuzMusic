@@ -39,6 +39,10 @@ def get_top_album(api_data, lfmTag, pikfile):
 
 
 def get_album_vector(albumTTags, pikfile):
+    """
+    Get the tags associated with an album
+    Insert weights if they appear in our tag list
+    """
     tag_list = open_all_tags(pikfile)
 
     albumList = []

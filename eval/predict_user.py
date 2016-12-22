@@ -49,15 +49,15 @@ def main(train_data, all_tags, userfile, limit):
         lastfm = json.load(f)
     album_name, album_vec = tgal.get_top_album(lastfm, best_tag[0], all_tags)
     print("Recommend album: {}".format(album_name))
-    print(album_vec.shape)
     # Performance of run
     perf = measures.dot_product(album_vec, uvec)
-    print("Performance: {}".format(perf))
+    print("Performance(cosine_similarity): {}".format(perf))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Create clusters of users\
     based on the tags they listen to.')
-    parser.add_argument('folder', help='Folder with user tag data(jsons)')
+    parser.add_argument('folder', help='Directory with user tag data(jsons) \
+    for training')
     parser.add_argument('all_tags', help='Pickle file containing the tag list')
     parser.add_argument('user', help='new user to predict')
     parser.add_argument('--limit', dest='limit', type=int, metavar='N',

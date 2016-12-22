@@ -20,4 +20,7 @@ def dot_product(album_vec, user_vec):
 
 
 def euclidean_dist(album_vec, user_vec):
+    """
+    Euclidean distance between two vectors
+    """
     return np.linalg.norm(album_vec-user_vec)
