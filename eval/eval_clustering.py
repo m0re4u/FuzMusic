@@ -47,6 +47,7 @@ def evaluate_cmeans(train_data, test_data, all_tags, limit, clusters=6,
         # Show performance
         if method == 'eucl':
             perf = measures.euclidean_dist(album_vec, uvec)
+            print(perf)
         else:
             perf = measures.dot_product(album_vec, uvec)
         # print("Performance: {}".format(perf))
@@ -54,7 +55,8 @@ def evaluate_cmeans(train_data, test_data, all_tags, limit, clusters=6,
     return p
 
 
-def evaluate_kmeans(train_data, test_data, all_tags, limit=100, clusters=6):
+def evaluate_kmeans(train_data, test_data, all_tags, limit=100, clusters=6,
+                    method='dot'):
     # Cluster training data
     print("Clustering(kmeans) with {} clusters".format(clusters))
     train = muv.make_vectors(train_data, all_tags, limit)
@@ -83,7 +85,11 @@ def evaluate_kmeans(train_data, test_data, all_tags, limit=100, clusters=6):
             lastfm, best_tag[0], all_tags)
 
         # Show performance
-        perf = measures.dot_product(album_vec, uvec)
+        if method == 'eucl':
+            perf = measures.euclidean_dist(album_vec, uvec)
+        else:
+            perf = measures.dot_product(album_vec, uvec)
+
         p.append(perf)
     return p
 

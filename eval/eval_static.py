@@ -34,7 +34,7 @@ def get_static_album(api_data, pikfile):
         print(e)
 
 
-def evaluate_static(test_data, all_tags, limit):
+def evaluate_static(test_data, all_tags, limit, method='dot'):
 
     # Cluster training data
     print("Evaluating static baseline")
@@ -52,7 +52,10 @@ def evaluate_static(test_data, all_tags, limit):
         udata = muv.make_vector(f, all_tags, limit)
         uvec = np.squeeze(np.asarray(udata))
         # Show performance
-        perf = measures.dot_product(album_vec, uvec)
+        if method == 'eucl':
+            perf = measures.euclidean_dist(album_vec, uvec)
+        else:
+            perf = measures.dot_product(album_vec, uvec)
         # print("Performance: {}".format(perf))
         p.append(perf)
     return p
@@ -65,9 +68,12 @@ if __name__ == '__main__':
     parser.add_argument('--limit', dest='limit', type=int, metavar='N',
                         help='Only use tags with more than N occurrences',
                         default=100)
+    parser.add_argument('--method', dest='method', metavar='M',
+                        help='Performance measuring method to use, defaults to\
+                        cosine similarity', default='dot')
     args = parser.parse_args()
 
-    res = evaluate_static(args.test, args.all_tags, args.limit)
+    res = evaluate_static(args.test, args.all_tags, args.limit, args.method)
     nl = np.array(res)
     print()
     print("{} clusters: mu {}: std: {}".format(nl.shape, np.mean(nl), np.std(nl)))

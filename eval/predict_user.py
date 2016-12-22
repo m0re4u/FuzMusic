@@ -27,7 +27,7 @@ def main(train_data, all_tags, userfile, limit):
     print("Running cmeans clustering.")
     results = fuzz.cluster.cmeans(
         train, 6, 2., error=0.005, maxiter=1000, init=None)
-    print("Done clustering - fpc: {}".format(results[6]))
+    print("Done clustering")
 
     # Predict the memberships to the different clusters for a new user
     print("Creating new user vector")
