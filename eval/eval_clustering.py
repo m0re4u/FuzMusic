@@ -101,5 +101,7 @@ if __name__ == '__main__':
     plt.plot(rc)
     plt.ylim((0, 1))
     plt.show()
+    print(rk)
+    print(rc)
     print(np.std(rk))
     print(np.std(rc))
