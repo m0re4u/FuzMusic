@@ -19,7 +19,7 @@ Useful links:
 - [~~ishibuchi classification maybe?~~](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.294.6338&rep=rep1&type=pdf)
 
 Note that the Last.fm API is veeery slow, so be doing the preprocessing yourself would take a lot of time
-It'd probably be wise to work with configuration files in the future..
+It'd probably be wise to work with configuration files in the future..<sub><sup><sub><sup>also the code could be cleaned up a whole bunch</sup></sub></sup></sub>
 -----
 ### Defuzzification (and returning albums based on clusters of tags)
 - Get an album from other user in the same cluster(collaborative) - but then why cluster and not just lookup the closest user?

@@ -13,10 +13,12 @@ import preprocess.make_user_vectors as muv
 from sklearn.cluster import KMeans
 
 
-def evaluate_cmeans(train_data, test_data, all_tags, limit, clusters=6):
+def evaluate_cmeans(train_data, test_data, all_tags, limit, clusters=6,
+                    method='dot'):
 
     # Cluster training data
-    print("Clustering(cmeans) with {} clusters".format(clusters))
+    print("Clustering(cmeans) with {} clusters, measuring performance with {}\
+    ".format(clusters, method))
     train = muv.make_vectors(train_data, all_tags, limit)
     results = fuzz.cluster.cmeans(
         train, clusters, 2., error=0.005, maxiter=1000, init=None)
@@ -43,7 +45,10 @@ def evaluate_cmeans(train_data, test_data, all_tags, limit, clusters=6):
             lastfm, best_tag[0], all_tags)
 
         # Show performance
-        perf = measures.dot_product(album_vec, uvec)
+        if method == 'eucl':
+            perf = measures.euclidean_dist(album_vec, uvec)
+        else:
+            perf = measures.dot_product(album_vec, uvec)
         # print("Performance: {}".format(perf))
         p.append(perf)
     return p
