@@ -13,22 +13,23 @@ import preprocess.make_user_vectors as muv
 from sklearn.cluster import KMeans
 
 
-def evaluate_cmeans(train_data, test_data, all_tags, limit):
+def evaluate_cmeans(train_data, test_data, all_tags, limit, clusters=6):
 
     # Cluster training data
-    print("Clustering")
+    print("Clustering(cmeans) with {} clusters".format(clusters))
     train = muv.make_vectors(train_data, all_tags, limit)
     results = fuzz.cluster.cmeans(
-        train, 6, 2., error=0.005, maxiter=1000, init=None)
+        train, clusters, 2., error=0.005, maxiter=1000, init=None)
 
     # Test on all test files
     files = glob.glob(os.path.join(test_data, "*.json"))
     p = []
+    print("Testing on {} files".format(len(files)))
     for f in files:
-        print("Testing file {}".format(f))
+        print(".", end="", flush=True)
         # Predict the cluster and membership for new user
         udata = muv.make_vector(f, all_tags, limit)
-        ures = fuzz.cluster.cmeans_predict(udata, results[0], 2., 0.005, 1000)
+        ures = fuzz.cluster.cmeans_predict(udata, results[0], 2., 0.005, 300)
         # Defuzzify
         newvec = defuzz.combine_fclusters(results[0], ures[0])
         uvec = np.squeeze(np.asarray(udata))
@@ -43,23 +44,24 @@ def evaluate_cmeans(train_data, test_data, all_tags, limit):
 
         # Show performance
         perf = measures.dot_product(album_vec, uvec)
-        print("Performance: {}".format(perf))
+        # print("Performance: {}".format(perf))
         p.append(perf)
     return p
 
 
-def evaluate_kmeans(train_data, test_data, all_tags, limit):
+def evaluate_kmeans(train_data, test_data, all_tags, limit=100, clusters=6):
     # Cluster training data
-    print("Clustering")
+    print("Clustering(kmeans) with {} clusters".format(clusters))
     train = muv.make_vectors(train_data, all_tags, limit)
-    c = KMeans(6, max_iter=300)
+    c = KMeans(clusters, max_iter=300, init='random')
     c.fit(train)
 
     # Test on all test files
     files = glob.glob(os.path.join(test_data, "*.json"))
     p = []
+    print("Testing on {} files".format(len(files)))
     for f in files:
-        print("Testing file {}".format(f))
+        print(".", end="", flush=True)
         # Predict the cluster and membership for new user
         udata = muv.make_vector(f, all_tags, limit)
         ures = c.fit_predict(udata)
@@ -77,7 +79,6 @@ def evaluate_kmeans(train_data, test_data, all_tags, limit):
 
         # Show performance
         perf = measures.dot_product(album_vec, uvec)
-        print("Performance: {}".format(perf))
         p.append(perf)
     return p
 

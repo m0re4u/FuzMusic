@@ -17,6 +17,8 @@ def main(train_data, all_tags):
         print("Trained {}, {}".format(i, results[6]))
 
     plt.plot(np.r_[2:30], fpcs)
+    plt.xlabel("Number of clusters")
+    plt.ylabel("fpc")
     plt.show()
 
 if __name__ == '__main__':
@@ -24,5 +26,7 @@ if __name__ == '__main__':
     based on the tags they listen to.')
     parser.add_argument('folder', help='Folder with user tag data(jsons)')
     parser.add_argument('all_tags', help='Pickle file containing the tag list')
+    parser.add_argument('maxc', help='Maximum number of clusters to try. Will\
+    train models with up to this number of clusters')
     args = parser.parse_args()
     main(args.folder, args.all_tags)

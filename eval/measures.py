@@ -17,3 +17,7 @@ def dot_product(album_vec, user_vec):
         norm_user = user_vec / nuv
 
     return np.dot(norm_album, norm_user)
+
+
+def euclidean_dist(album_vec, user_vec):
+    return np.linalg.norm(album_vec-user_vec)
